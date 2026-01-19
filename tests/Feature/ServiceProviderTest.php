@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use Accelade\QueryBuilder\QueryBuilder;
-use Tests\TestCase;
-
-uses(TestCase::class);
 
 it('registers the config', function () {
     expect(config('query-builder.per_page'))->toBe(15);

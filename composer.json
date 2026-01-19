@@ -3,6 +3,15 @@
     "description": "Query builder engine for Accelade - build, filter, sort, and paginate Eloquent queries with a fluent API",
     "type": "library",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../accelade",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "authors": [
         {
             "name": "Fady Mondy",

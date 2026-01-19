@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce2daa9d1aa20740663fde398cf35f7e",
+    "content-hash": "f34e0189efeea4fd082dd9598ecd5848",
     "packages": [
         {
             "name": "accelade/accelade",
             "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/accelade/accelade.git",
-                "reference": "9586cf448ac286ec7e278f0a1a57e558e3e22af8"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/accelade/accelade/zipball/9586cf448ac286ec7e278f0a1a57e558e3e22af8",
-                "reference": "9586cf448ac286ec7e278f0a1a57e558e3e22af8",
-                "shasum": ""
+                "type": "path",
+                "url": "../accelade",
+                "reference": "9586cf448ac286ec7e278f0a1a57e558e3e22af8"
             },
             "require": {
                 "blade-ui-kit/blade-icons": "^1.8",
@@ -38,14 +32,14 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "aliases": {
-                        "Icons": "Accelade\\Facades\\Icons",
-                        "Notify": "Accelade\\Facades\\Notify",
-                        "Accelade": "Accelade\\Facades\\Accelade"
-                    },
                     "providers": [
                         "Accelade\\AcceladeServiceProvider"
-                    ]
+                    ],
+                    "aliases": {
+                        "Accelade": "Accelade\\Facades\\Accelade",
+                        "Notify": "Accelade\\Facades\\Notify",
+                        "Icons": "Accelade\\Facades\\Icons"
+                    }
                 }
             },
             "autoload": {
@@ -53,7 +47,39 @@
                     "Accelade\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Accelade\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "pest"
+                ],
+                "test:coverage": [
+                    "pest --coverage"
+                ],
+                "format": [
+                    "pint"
+                ],
+                "format:test": [
+                    "pint --test"
+                ],
+                "mago": [
+                    "./mago lint src/ || mago lint src/"
+                ],
+                "mago:fix": [
+                    "./mago lint src/ --fix || mago lint src/ --fix"
+                ],
+                "analyse": [
+                    "@format:test",
+                    "@mago"
+                ],
+                "ci": [
+                    "@analyse",
+                    "@test"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -68,7 +94,6 @@
             "description": "Reactive Blade templates with Vue, React, Svelte, Angular, or vanilla JavaScript",
             "homepage": "https://github.com/fadymondy/accelade",
             "keywords": [
-                "SPA",
                 "angular",
                 "blade",
                 "components",
@@ -76,20 +101,14 @@
                 "notifications",
                 "react",
                 "reactive",
+                "spa",
                 "svelte",
                 "vue"
             ],
-            "support": {
-                "issues": "https://github.com/accelade/accelade/issues",
-                "source": "https://github.com/accelade/accelade/tree/v1.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/fadymondy",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-01-19T10:03:15+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "blade-ui-kit/blade-icons",

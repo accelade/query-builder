@@ -25,14 +25,14 @@ Instead, please report them via one of the following methods:
    - Fill out the form with details
 
 2. **Email**
-   - Send an email to: security@example.com (replace with actual email)
-   - Use the subject line: `[SECURITY] Accelade Infolists Vulnerability Report`
+   - Send an email to: info@3x1.io
+   - Use the subject line: `[SECURITY] Accelade Query Builder Vulnerability Report`
 
 ### What to Include
 
 Please include the following information in your report:
 
-- **Type of vulnerability** (e.g., XSS, SQL injection, CSRF, etc.)
+- **Type of vulnerability** (e.g., SQL injection, information disclosure, etc.)
 - **Location** of the affected source code (file path, line numbers)
 - **Steps to reproduce** the vulnerability
 - **Proof of concept** or exploit code (if possible)
@@ -78,28 +78,47 @@ We will not pursue legal action against researchers who:
 
 ## Security Best Practices
 
-When using Accelade Infolists in your application:
+When using Accelade Query Builder in your application:
 
-### XSS Prevention
+### SQL Injection Prevention
 
-- Always escape user input in Blade templates using `{{ }}` (not `{!! !!}`)
-- Be cautious when using HtmlEntry or MarkdownEntry with user content
-- Sanitize HTML content before rendering
+The Query Builder uses Laravel's Eloquent ORM which automatically handles parameter binding. However:
 
-### Content Security Policy
-
-Consider implementing a Content Security Policy header:
+- Never pass raw user input directly to `whereRaw()` or similar raw methods
+- Always use the filter and search methods provided by Query Builder
+- Validate and sanitize user input before passing to custom filters
 
 ```php
-// In a middleware
-$response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'");
+// SAFE - Query Builder handles escaping
+$builder->search($request->input('search'));
+
+// SAFE - Filters use parameter binding
+$builder->setFilterValues($request->validated());
+
+// CAUTION - Be careful with raw queries
+$builder->tap(fn ($q) => $q->whereRaw('column = ?', [$validated_input]));
 ```
 
-### Data Validation
+### Authorization
 
-- Validate all data before passing to infolist entries
-- Sanitize file paths for ImageEntry
-- Validate URLs before displaying
+- Always check authorization before exposing query results
+- Use Laravel's policies and gates for resource access control
+- Consider implementing row-level security for multi-tenant applications
+
+```php
+// Good practice - check authorization
+$builder = QueryBuilder::for(User::class)
+    ->tap(fn ($q) => $q->where('team_id', auth()->user()->team_id));
+```
+
+### Pagination Security
+
+- Set reasonable limits on per-page values to prevent resource exhaustion
+- Consider implementing rate limiting on paginated endpoints
+
+```php
+$builder->perPageOptions([10, 25, 50]); // Limit options
+```
 
 ## Vulnerability Disclosure
 
@@ -114,4 +133,4 @@ After a vulnerability has been fixed, we will:
 
 For security-related questions that are not vulnerabilities, please open a regular GitHub issue or discussion.
 
-Thank you for helping keep Accelade Infolists and its users safe!
+Thank you for helping keep Accelade Query Builder and its users safe!

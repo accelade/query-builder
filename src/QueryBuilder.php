@@ -138,7 +138,7 @@ class QueryBuilder implements QueryBuilderInterface
      */
     public function fromRequest(?array $data = null): static
     {
-        $data = $data ?? request()->all();
+        $data ??= request()->all();
 
         // Apply search from request
         if (isset($data[$this->getSearchInputName()])) {
